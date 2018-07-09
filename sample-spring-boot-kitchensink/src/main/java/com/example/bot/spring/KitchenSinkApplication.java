@@ -21,9 +21,9 @@ import com.linecorp.bot.model.ReplyMessage;
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
-import com.linecorp.bot.model.message.ImageMessage;
 import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.model.response.BotApiResponse;
+import com.linecorp.bot.spring.boot.LineBotProperties;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 import lombok.extern.slf4j.Slf4j;
@@ -44,6 +44,9 @@ public class KitchenSinkApplication {
     
     @Autowired
     public LineMessagingClient lineMessagingClient;
+    
+    @Autowired
+    private LineBotProperties lineBotProperties;
 
     static Path downloadedContentDir;
 
@@ -55,19 +58,21 @@ public class KitchenSinkApplication {
     @EventMapping
     public void handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
         final LineMessagingClient client = LineMessagingClient
-                .builder("thLH/MvoqBwCdbBcKOjsSujJNaE2TZV+EAdTRq4e6Gu96R8ogu9Jmt+LaH3Ksgot6E5Hnv+13S97AZVBKpufgmBcVR2sOs14I/tgglaM6PCwkBiHoc3LelXj1r3GAYAhmO76IFXz0rXB9Q7TXPf8bgdB04t89/1O/w1cDnyilFU=")
+//                .builder("thLH/MvoqBwCdbBcKOjsSujJNaE2TZV+EAdTRq4e6Gu96R8ogu9Jmt+LaH3Ksgot6E5Hnv+13S97AZVBKpufgmBcVR2sOs14I/tgglaM6PCwkBiHoc3LelXj1r3GAYAhmO76IFXz0rXB9Q7TXPf8bgdB04t89/1O/w1cDnyilFU=")
+                .builder(lineBotProperties.getChannelToken())
                 .build();
 
         final TextMessage textMessage = new TextMessage(event.getMessage().getText());
 
         // 返信用画像(image)のURL
-        final String originalContentUrl = "https://art4.photozou.jp/pub/784/784/photo/17561757.v1524899011.jpg";
-        final String previewImageUrl = "https://art4.photozou.jp/pub/784/784/photo/17561757_thumbnail.v1524899011.jpg";
+//        final String originalContentUrl = "https://art4.photozou.jp/pub/784/784/photo/17561757.v1524899011.jpg";
+//        final String previewImageUrl = "https://art4.photozou.jp/pub/784/784/photo/17561757_thumbnail.v1524899011.jpg";
 
         // 返信用画像(image)メッセージ
-        ImageMessage imageMessage = new ImageMessage(originalContentUrl, previewImageUrl);
+//        ImageMessage imageMessage = new ImageMessage(originalContentUrl, previewImageUrl);
 
-        final ReplyMessage replyMessage = new ReplyMessage(event.getReplyToken(), Arrays.asList(imageMessage, textMessage));
+//        final ReplyMessage replyMessage = new ReplyMessage(event.getReplyToken(), Arrays.asList(imageMessage, textMessage));
+        final ReplyMessage replyMessage = new ReplyMessage(event.getReplyToken(), Arrays.asList(textMessage));
 
         final BotApiResponse botApiResponse;
         try {
