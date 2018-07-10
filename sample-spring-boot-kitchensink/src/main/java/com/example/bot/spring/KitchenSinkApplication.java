@@ -58,7 +58,6 @@ public class KitchenSinkApplication {
     @EventMapping
     public void handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
         final LineMessagingClient client = LineMessagingClient
-//                .builder("thLH/MvoqBwCdbBcKOjsSujJNaE2TZV+EAdTRq4e6Gu96R8ogu9Jmt+LaH3Ksgot6E5Hnv+13S97AZVBKpufgmBcVR2sOs14I/tgglaM6PCwkBiHoc3LelXj1r3GAYAhmO76IFXz0rXB9Q7TXPf8bgdB04t89/1O/w1cDnyilFU=")
                 .builder(lineBotProperties.getChannelToken())
                 .build();
 
@@ -75,14 +74,22 @@ public class KitchenSinkApplication {
         final ReplyMessage replyMessage = new ReplyMessage(event.getReplyToken(), Arrays.asList(textMessage));
 
         final BotApiResponse botApiResponse;
+        String replyToken = event.getReplyToken();
+        
         try {
-            botApiResponse = client.replyMessage(replyMessage).get();
+//            botApiResponse = client.replyMessage(replyMessage).get();
+              if (("マルちゃん").equals(client.replyMessage(replyMessage).get())
+              || ("マル").equals(client.replyMessage(replyMessage).get())) {
+//                  botApiResponse = client.replyMessage(replyMessage).get();
+                  new TextMessage("呼んだ？");
+              
+            }
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
             return;
         }
 
-        System.out.println(botApiResponse);
+        log.info("handleDefaultMessageEvent = {}", event);
     }
 
     @EventMapping
