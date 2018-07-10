@@ -74,7 +74,7 @@ public class KitchenSinkApplication {
         final ReplyMessage replyMessage = new ReplyMessage(event.getReplyToken(), Arrays.asList(textMessage));
 
         final BotApiResponse botApiResponse;
-        String replyToken = event.getReplyToken();
+//        String replyToken = event.getReplyToken();
         
         try {
 //            botApiResponse = client.replyMessage(replyMessage).get();
